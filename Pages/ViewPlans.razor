@@ -1,0 +1,32 @@
+﻿@page "/view"
+@inject PersonalGymBook.Services.WorkoutService WorkoutService
+@using PersonalGymBook.Models
+@using System.Linq
+
+<h3>Workout Plans</h3>
+
+@if (plans == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @foreach (var plan in plans)
+    {
+        <div>
+            <h4>@plan.Notes</h4>
+            <p>Total Days: @plan.TotalDays</p>
+            <p>Duration: @plan.Duration weeks</p>
+            <NavLink class="btn btn-primary" href="@($"view/{plan.Id}")">View Details</NavLink>
+        </div>
+    }
+}
+
+@code {
+    private IEnumerable<WorkoutPlan> plans;
+
+    protected override async Task OnInitializedAsync()
+    {
+        plans = await WorkoutService.GetAllWorkoutPlansAsync();
+    }
+}

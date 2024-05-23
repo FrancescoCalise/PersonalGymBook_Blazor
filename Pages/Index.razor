@@ -1,0 +1,23 @@
+﻿@page "/"
+@inject PersonalGymBook.Services.WorkoutService WorkoutService
+@using PersonalGymBook.Models
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text.Json
+
+<h3>INDEX </h3>
+
+<InputFile OnChange="HandleFileSelected" />
+
+@code {
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var stream = file.OpenReadStream();
+        using var reader = new StreamReader(stream);
+        var json = await reader.ReadToEndAsync();
+        var workoutPlan = JsonSerializer.Deserialize<WorkoutPlan>(json);
+        workoutPlan.Id = Guid.NewGuid(); // Ensure a new ID
+        await WorkoutService.SaveWorkoutPlanAsync(workoutPlan);
+        // Display success message or redirect
+    }
+}

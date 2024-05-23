@@ -1,0 +1,43 @@
+﻿@page "/view/{id:guid}"
+@inject PersonalGymBook.Services.WorkoutService WorkoutService
+@using PersonalGymBook.Models
+@using System.Linq
+
+<h3>Workout Plan Details</h3>
+
+@if (plan == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h4>Notes: @plan.Notes</h4>
+    <h4>Total Days: @plan.TotalDays</h4>
+    <h4>Duration: @plan.Duration weeks</h4>
+    <h4>Exercises:</h4>
+    @foreach (var day in Enumerable.Range(1, plan.TotalDays))
+    {
+        <h5>Day @day</h5>
+        var exercisesForDay = plan.Exercises.Where(e => e.Day == day);
+        foreach (var exercise in exercisesForDay)
+        {
+            <p>
+                <strong>@exercise.Name</strong> - @exercise.MuscleGroup <br />
+                Sets: @exercise.Sets, Repetitions: @exercise.Repetitions, Rest: @exercise.RestTime seconds <br />
+                Notes: @exercise.Notes
+            </p>
+        }
+    }
+}
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private WorkoutPlan plan;
+
+    protected override async Task OnInitializedAsync()
+    {
+        plan = await WorkoutService.GetWorkoutPlanAsync(Id);
+    }
+}
