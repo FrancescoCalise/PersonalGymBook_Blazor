@@ -40,9 +40,6 @@ bower_components/
 # Ignore environment files
 .env
 
-# Ignore publish output
-wwwroot/
-
 # Ignore .NET core configuration files
 appsettings*.json
 app.config
