@@ -1,7 +1,6 @@
 # Ignore build output directories
 bin/
 obj/
-wwwroot/
 
 # User-specific files
 *.rsuser
