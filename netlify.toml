@@ -1,6 +1,6 @@
 [build]
-  publish = "publish/wwwroot"
-  command = "dotnet publish -c Release -o publish"
+  publish = "Publish/wwwroot"
+  command = "dotnet publish -c Release -o Publish"
 
 [[redirects]]
   from = "/*"
